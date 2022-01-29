@@ -20,7 +20,7 @@ extension CircularSlider {
      - parameter context:       the context
      
      */
-    internal static func drawArc(withArc arc: Arc, lineWidth: CGFloat = 2, mode: CGPathDrawingMode = .fillStroke, inContext context: CGContext) {
+    internal static func drawArc(withArc arc: Arc, lineWidth: CGFloat = 2, mode: CGPathDrawingMode = .fillStroke, inContext context: CGContext,roundType:CGLineCap) {
         
         let circle = arc.circle
         let origin = circle.origin
@@ -29,13 +29,15 @@ extension CircularSlider {
         context.beginPath()
         
         context.setLineWidth(lineWidth)
-        context.setLineCap(CGLineCap.round)
+        context.setLineCap(roundType)
         context.addArc(center: origin, radius: circle.radius, startAngle: arc.startAngle, endAngle: arc.endAngle, clockwise: false)
         context.move(to: CGPoint(x: origin.x, y: origin.y))
         context.drawPath(using: mode)
         
         UIGraphicsPopContext()
     }
+    
+    
     
     /**
      Draw disk using arc coordinates
@@ -68,7 +70,7 @@ extension CircularSlider {
 
         let circle = Circle(origin: bounds.center, radius: self.radius)
         let sliderArc = Arc(circle: circle, startAngle: CircularSliderHelper.circleMinValue, endAngle: CircularSliderHelper.circleMaxValue)
-        CircularSlider.drawArc(withArc: sliderArc, lineWidth: backtrackLineWidth, inContext: context)
+        CircularSlider.drawArc(withArc: sliderArc, lineWidth: backtrackLineWidth, inContext: context, roundType: roundType)
     }
 
     /// draw Filled arc between start an end angles
@@ -82,7 +84,7 @@ extension CircularSlider {
         // fill Arc
         CircularSlider.drawDisk(withArc: arc, inContext: context)
         // stroke Arc
-        CircularSlider.drawArc(withArc: arc, lineWidth: lineWidth, mode: .stroke, inContext: context)
+        CircularSlider.drawArc(withArc: arc, lineWidth: lineWidth, mode: .stroke, inContext: context, roundType: roundType)
     }
 
     internal func drawShadowArc(fromAngle startAngle: CGFloat, toAngle endAngle: CGFloat, inContext context: CGContext) {
@@ -93,7 +95,7 @@ extension CircularSlider {
         let arc = Arc(circle: circle, startAngle: startAngle, endAngle: endAngle)
 
         // stroke Arc
-        CircularSlider.drawArc(withArc: arc, lineWidth: lineWidth, mode: .stroke, inContext: context)
+        CircularSlider.drawArc(withArc: arc, lineWidth: lineWidth, mode: .stroke, inContext: context, roundType: roundType)
     }
 
     /**
@@ -118,7 +120,7 @@ extension CircularSlider {
         let thumbCircle = Circle(origin: thumbOrigin, radius: thumbRadius)
         let thumbArc = Arc(circle: thumbCircle, startAngle: CircularSliderHelper.circleMinValue, endAngle: CircularSliderHelper.circleMaxValue)
 
-        CircularSlider.drawArc(withArc: thumbArc, lineWidth: thumbLineWidth, inContext: context)
+        CircularSlider.drawArc(withArc: thumbArc, lineWidth: thumbLineWidth, inContext: context, roundType: roundType)
         return thumbOrigin
     }
 

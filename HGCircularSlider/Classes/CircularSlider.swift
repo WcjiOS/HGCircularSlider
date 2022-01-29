@@ -192,8 +192,9 @@ open class CircularSlider: UIControl {
     */
     @IBInspectable
     open var stopThumbAtMinMax: Bool = false
-
-
+    
+    @IBInspectable
+    open var roundType: CGLineCap = .round
     /**
      * The value of the endThumb (changed when the user change the position of the end thumb)
      *
